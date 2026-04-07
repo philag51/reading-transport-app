@@ -1,0 +1,375 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Travel in Reading{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'home.css' %}">
+
+    <style>
+        @font-face {
+            font-family: "MyFont";
+            src: url("/static/fonts/Netto-Regular-Demo-BF648bcd4ec503f.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: "MyFont", sans-serif;
+            color: whitesmoke;
+            margin: 0;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .hero-pic {
+            position: relative;
+        }
+
+        .hero-pic img{
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+            box-shadow: 0 8px 16px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-pic::after{
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1;
+       }
+
+       .hero-text {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            color: whitesmoke;
+        }
+
+        .hero-text p{
+            color: whitesmoke;
+            font-size: 20px;
+        }
+
+        .site-header{
+        font-family: 'MyFont', sans-serif;
+        color: rgb(255, 255, 255);
+        background: #2b2a2a;
+        box-shadow: 0 8px 16px -1px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        overflow: visible;
+        padding: 6px 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .site-header a {
+        font-size: 16px;
+        color: whitesmoke;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 10px 12px;
+        border-radius: 6px;
+    }
+
+    .site-header a:hover {
+        color: #696969;
+    }
+
+    .companies {
+        padding: 40px 0;
+    }
+
+    .brands {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    align-items: center;
+    justify-items: center;
+    }
+
+    .brands img {
+    max-width: 180px;
+    height: 80px;
+    object-fit: contain;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .brands img:hover {
+        transform: scale(1.08) translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .intro-line {
+        color: black;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .sources {
+        padding: 40px 0;
+    }
+
+    .dsources {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+        align-items: center;
+        justify-items: center;
+    }
+
+    .dsources img {
+        max-width: 180px;
+        height: 80px;
+        align-items: center;
+        justify-items: center;
+        object-fit: contain;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .info-cards {
+    max-width: 1400px;
+    margin: 60px auto 40px;
+    padding: 0 24px;
+    display: flex;
+    gap: 24px;
+    align-items: stretch;
+    }
+
+    .img-txt-box {
+        flex: 1;
+        min-width: 0;
+        background: #2b2a2a;
+        box-shadow: 0 8px 16px -1px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .img-txt-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.6);
+    }
+
+    .img-container {
+        position: relative;
+    }
+
+    .img-container::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.6));
+    }
+
+    .img-container img {
+        width: 100%;
+        height: 260px;
+        object-fit: cover;
+        display: block;
+    }
+
+
+    .txt-container {
+        background: #2b2a2a;
+        color: whitesmoke;
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        flex: 1;
+    }
+
+    .txt-container h3 {
+        margin: 0 0 12px;
+        font-size: 32px;
+        font-weight: 700;
+        color: whitesmoke;
+    }
+
+    .txt-container p {
+        margin: 0;
+        line-height: 1.6;
+        font-size: 18px;
+        font-weight: 700;
+        color: #d1d5db;
+    }
+
+    .card-link {
+        flex: 1;
+        min-width: 0;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .powered-by {
+        color: black;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .footer-banner {
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        margin-right: -20px;
+        padding: 0;
+    }
+
+    .footer-banner img {
+        width: 100%;
+        height: 10px;              
+        object-fit: cover;        
+        display: block;
+    }
+
+    .footer {
+    font-family: 'MyFont', sans-serif;
+    color: white;
+    background: #2b2a2a;
+    padding: 0 20px 12px;
+    font-size: 14px;
+    opacity: 0.9;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0;
+    padding-top: 0;
+    }
+
+    .footer p {
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    
+
+
+    </style>
+</head>
+<body>
+<header class="site-header">
+    <h1>Public Transport in Reading</h1>
+    <nav class="linx">
+        <ul style="display: flex; gap: 20px; list-style: none; padding: 0;">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'buses' %}">Find the Next Buses!</a></li>
+            <li><a href="{% url 'tracker' %}">Track a bus!</a></li>
+            <li><a href="{% url 'trains' %}">Find the Next Trains!</a></li>
+        </ul>
+    </nav>
+</header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-pic">
+            <img src="{% static 'images/IMG_5202.jpeg' %}" alt="Hero image">
+        <div class="hero-text">
+            <h1>Welcome to the Public Transport in Reading site!</h1>
+            <p>Get live info on the next buses and trains</p>
+        </div>
+        </div>
+      </section>
+
+      <section class="info-cards">
+       <a href="/buses/" class="card-link">
+        <div class="img-txt-box">
+            <div class="img-container">
+                <img src="{% static 'images/bus_side.jpeg' %}" alt="Bus Side">
+            </div>
+            <div class="txt-container">
+                <h3>Find the next buses!</h3>
+                <p>See live departure across Reading & Thames Valley!</p>
+            </div>
+        </div>
+      </a>
+
+      <a href="/tracker/" class="card-link">
+        <div class="img-txt-box">
+            <div class="img-container">
+                <img src="{% static 'images/tracker.png' %}" alt="Tracker Map">
+            </div>
+            <div class="txt-container">
+                <h3>Track a bus!</h3>
+                <p>See where your bus is in real time!</p>
+            </div>
+        </div>
+      </a>
+
+      <a href="/trains/" class="card-link">
+        <div class="img-txt-box">
+            <div class="img-container">
+                <img src="{% static 'images/IMG_5194.jpeg' %}" alt="Rails">
+            </div>
+            <div class="txt-container">
+                <h3>Find the next train!</h3>
+                <p>Local & National rail connections!</p>
+            </div>
+        </div>
+      </a>
+    </section>
+
+
+      <div class="intro-line">
+        <p>Reading is proudly served by: </p>
+      </div>
+      <section class="companies">
+        <div class="brands">
+
+            <a href="https://www.reading-buses.co.uk/"><img src="{% static 'images/rb-logo.png' %}" alt="Reading Buses"></a>
+            <a href="https://www.thamesvalleybuses.com/"><img src="{% static 'images/tv-logo.jpg' %}" alt="Thames Valley"></a>
+            <a href="https://www.carouselbuses.co.uk/"><img src="{% static 'images/cb-logo.png' %}" alt="Carousel Buses"></a>
+            
+
+            <a href="https://www.oxfordbus.co.uk/thames-travel"><img src="{% static 'images/tt-logo.png' %}" alt="Thames Travel"></a>
+            <a href="https://tfl.gov.uk/modes/elizabeth-line/"><img src="{% static 'images/el-logo.png' %}" alt="Elizabeth Line"></a>
+            <a href="https://www.gwr.com/"><img src="{% static 'images/gwr-logo.png' %}" alt="GWR"></a>
+
+        </div>
+       </section>
+        
+       <div class="powered-by">
+        <p>Powered by: </p>
+       </div>
+       <section class="sources">
+         <div class="dsources">
+            <a href="https://reading-opendata.r2p.com/"><img src="{% static 'images/r2p-logo.png' %}" alt="R2P"></a>
+            <a href="https://api.rtt.io/"><img src="{% static 'images/rtt-logo.jpg' %}" alt="Realtime Trains"></a>
+         </div>
+       </section>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+</body>
+<footer class="footer">
+   <div class="footer-banner">
+        <img src="{% static 'images/rb-banner.png' %}" alt="RB Banner">
+   </div>
+     <p>
+      Bus data sourced from the R2P Open Data Portal, Rail data sourced from Realtime Trains API | All logos belong to their respective companies
+     </p>
+</footer>
+</html>

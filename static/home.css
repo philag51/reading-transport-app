@@ -1,0 +1,28 @@
+@font-face {
+    font-family: "MyFont";
+    src: url("/static/fonts/Netto-Regular-Demo-BF648bcd4ec503f.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: "MyFont", sans-serif;
+    color: whitesmoke;
+    margin: 0;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.hero-pic {
+    position: relative;
+}
+
+.hero-pic img{
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+}

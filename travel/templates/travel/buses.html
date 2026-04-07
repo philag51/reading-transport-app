@@ -1,0 +1,358 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Next Bus Departures</title>
+
+    <style>
+        @font-face {
+            font-family: "MyFont";
+            src: url("/static/fonts/Netto-Regular-Demo-BF648bcd4ec503f.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: "MyFont", sans-serif;
+            color: rgb(0, 0, 0);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            flex: 1 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .search-card {
+            background: #f7f7f7;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .search-card,
+        .results-card {
+            background: whitesmoke;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .site-header {
+            font-family: 'MyFont', sans-serif;
+            color: rgb(255, 255, 255);
+            background: #2b2a2a;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            overflow: visible;
+            padding: 6px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .site-header a {
+            font-size: 16px;
+            color: whitesmoke;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 10px 12px;
+            border-radius: 6px;
+        }
+
+        .site-header a:hover {
+            color: #696969;
+        }
+
+        .suggestions {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #suggestions button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 8px;
+            margin-top: 4px;
+            cursor: pointer;
+            background: #f1f1f1;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #suggestions button:hover {
+            background: #e1e1e1;
+        }
+
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #aaa;
+            padding: 8px;
+        }
+
+        th {
+            background: #ddd;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        #search-form {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #stop-input {
+            width: 400px;
+            max-width: 100%;
+            padding: 12px 14px;
+            font-size: 18px;
+            border: 2px solid #222;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+
+        .pl {
+            font-family: 'MyFont', sans-serif;
+            font-weight: bold;
+        }
+
+        .bus-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 10px;
+            table-layout: fixed;
+        }
+
+        .bus-table thead th {
+            background-color: #383c3e;
+            color: whitesmoke;
+        }
+
+        .bus-table td {
+            padding: 12px;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .operator-cell {
+            text-align: center;
+            vertical-align: middle;
+            padding: 6px;
+        }
+
+        .operator-logo {
+            width: 140px;
+            height: 50px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+
+        .operator-logo img {
+            transform: scale(1.00);
+            transform-origin: center;
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+
+        .footer-banner {
+            width: calc(100% + 40px);
+            margin-left: -20px;
+            margin-right: -20px;
+            padding: 0;
+        }
+
+        .footer-banner img {
+            width: 100%;
+            height: 10px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .footer {
+            flex-shrink: 0;
+            font-family: 'MyFont', sans-serif;
+            color: white;
+            background: #2b2a2a;
+            padding: 0 20px 12px;
+            font-size: 14px;
+            opacity: 0.9;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .footer p {
+            font-size: 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <h1>Public Transport in Reading</h1>
+        <nav class="linx">
+            <ul style="display: flex; gap: 20px; list-style: none; padding: 0;">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'buses' %}">Find the Next Buses!</a></li>
+                <li><a href="{% url 'tracker' %}">Track a bus!</a></li>
+                <li><a href="{% url 'trains' %}">Find the Next Trains!</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <h1>Find the next buses!</h1>
+
+        <div class="search-card">
+            <form method="POST" id="search-form">
+                {% csrf_token %}
+                <input id="stop-input" type="text" name="stop_name" placeholder="Enter the name of a bus stop" class="pl" autocomplete="off">
+            </form>
+        </div>
+
+        <div id="suggestions"></div>
+
+        <hr>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if departures %}
+            <div class="results-card">
+                <h2>Departures from {{ stop_name }}</h2>
+
+                <table class="bus-table">
+                    <thead>
+                        <tr>
+                            <th>Operator</th>
+                            <th>Route</th>
+                            <th>Destination</th>
+                            <th>Time</th>
+                            <th>Due</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bus in departures %}
+                            <tr>
+                                <td class="operator-cell">
+                                    {% if bus.logo %}
+                                        <div class="operator-logo">
+                                            <img src="{% static bus.logo %}" alt="{{ bus.operator }}">
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>{{ bus.route }}</td>
+                                <td>{{ bus.destination }}</td>
+                                <td>{{ bus.time }}</td>
+                                <td>{{ bus.mins }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+
+    <footer class="footer">
+        <div class="footer-banner">
+            <img src="{% static 'images/rb-banner.png' %}" alt="RB Banner">
+        </div>
+        <p>
+        Bus data is sourced from the R2P Open Data Portal | All logos belong to their respective companies
+        </p>
+    </footer>
+
+    <script>
+        function selectStop(description, code) {
+            const form = document.createElement("form");
+            form.method = "POST";
+
+            const csrf = document.querySelector("[name=csrfmiddlewaretoken]").cloneNode();
+            form.appendChild(csrf);
+
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "location_code";
+            input.value = code;
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        document.getElementById("stop-input").addEventListener("input", function () {
+            const q = this.value;
+            const suggestionsDiv = document.getElementById("suggestions");
+
+            if (!q) {
+                suggestionsDiv.innerHTML = "";
+                return;
+            }
+
+            fetch(`/stop-search/?q=${q}`)
+                .then(response => response.json())
+                .then(data => {
+                    suggestionsDiv.innerHTML = "";
+
+                    data.forEach(item => {
+                        const btn = document.createElement("button");
+                        btn.textContent = item.description;
+                        btn.type = "button";
+                        btn.onclick = () => selectStop(item.description, item.location_code);
+                        suggestionsDiv.appendChild(btn);
+                    });
+                });
+        });
+    </script>
+</body>
+</html>
