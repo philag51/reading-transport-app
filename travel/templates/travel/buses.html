@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Next Bus Departures</title>
 
     <style>
@@ -59,21 +60,21 @@
         }
 
         .site-header {
-            font-family: 'MyFont', sans-serif;
-            color: rgb(255, 255, 255);
-            background: #2b2a2a;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            position: relative;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            overflow: visible;
-            padding: 6px 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
+        font-family: 'MyFont', sans-serif;
+        color: rgb(255, 255, 255);
+        background: #2b2a2a;
+        box-shadow: 0 8px 16px -1px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        position: relative;
+        z-index: 1000;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 6px 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-shrink: 0;
         }
 
         .site-header a {
@@ -84,6 +85,23 @@
             padding: 10px 12px;
             border-radius: 6px;
         }
+
+        @media (max-width: 768px) {
+        .site-header {
+            padding: 12px;
+            gap: 12px;
+        }
+
+        .site-header h1 {
+            font-size: 22px;
+            line-height: 1.2;
+        }
+
+        .site-header a {
+            font-size: 14px;
+            padding: 6px 8px;
+        }
+    }
 
         .site-header a:hover {
             color: #696969;
@@ -152,6 +170,12 @@
             font-family: 'MyFont', sans-serif;
             font-weight: bold;
         }
+
+        .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
 
         .bus-table {
             width: 100%;
@@ -270,7 +294,8 @@
         {% if departures %}
             <div class="results-card">
                 <h2>Departures from {{ stop_name }}</h2>
-
+            
+            <div class="table-wrap">
                 <table class="bus-table">
                     <thead>
                         <tr>
@@ -299,6 +324,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
             </div>
         {% endif %}
     </div>

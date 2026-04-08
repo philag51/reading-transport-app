@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Travel in Reading{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'home.css' %}">
 
@@ -88,6 +89,69 @@
         padding: 10px 12px;
         border-radius: 6px;
     }
+
+    @media (max-width: 768px) {
+    .site-header {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .site-header h1 {
+        font-size: 22px;
+        line-height: 1.2;
+    }
+
+    .site-header a {
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+}
+
+    @media (max-width: 768px) {
+    .info-cards {
+        flex-direction: column;
+    }
+
+    .card-link,
+    .img-txt-box {
+        width: 100%;
+    }
+
+    .img-container img {
+        height: 220px;
+    }
+
+    .txt-container h3 {
+        font-size: 24px;
+    }
+
+    .txt-container p {
+        font-size: 15px;
+    }
+}
+
+    @media (max-width: 768px) {
+    .info-cards {
+        flex-direction: column;
+    }
+
+    .card-link,
+    .img-txt-box {
+        width: 100%;
+    }
+
+    .img-container img {
+        height: 220px;
+    }
+
+    .txt-container h3 {
+        font-size: 24px;
+    }
+
+    .txt-container p {
+        font-size: 15px;
+    }
+}
 
     .site-header a:hover {
         color: #696969;

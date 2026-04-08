@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Next Trains{% endblock %}</title>
     <style>
          @font-face {
@@ -89,6 +90,23 @@
         border-radius: 6px;
     }
 
+    @media (max-width: 768px) {
+    .site-header {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .site-header h1 {
+        font-size: 22px;
+        line-height: 1.2;
+    }
+
+    .site-header a {
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+}
+
     .site-header a:hover {
         color: #696969;
     }
@@ -104,6 +122,12 @@
         color: whitesmoke;
         border-radius: 6px;
     }
+
+    .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
     .train-table {
             width: 100%;
@@ -227,7 +251,7 @@
     {% if station_name %}
     <div class="results-card">
         <h2>Departures from {{ station_name }}</h2>
-
+      <div class="table-wrap">
         <table border="1" cellpadding="5" class="train-table">
             <thead>
             <tr>
@@ -260,6 +284,7 @@
             {% endfor %}
             </tbody>
         </table>
+      </div>
         {% endif %}
     </div>
 </div>

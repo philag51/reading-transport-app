@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Live Bus Tracker</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
@@ -54,6 +55,23 @@
         border-radius: 6px;
     }
 
+    @media (max-width: 768px) {
+    .site-header {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .site-header h1 {
+        font-size: 22px;
+        line-height: 1.2;
+    }
+
+    .site-header a {
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+}
+
     .site-header a:hover {
         color: #696969;
     }
@@ -82,95 +100,111 @@
 <div id="map"></div>
 
 <script>
-  const map = L.map("map").setView([51.456, -0.969], 13);
+const map = L.map("map").setView([51.456, -0.969], 13);
 
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
   attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
   subdomains: 'abcd',
   maxZoom: 20
 }).addTo(map);
 
-  const markers = new Map();
+const markers = new Map();
 
-  function updateBuses() {
-    fetch("{% url 'tracker_data' %}")
-      .then(r => r.json())
-      .then(buses => {
-        if (buses.error) {
-          console.error(buses.error);
-          return;
-        }
+function getMarkerRadius(zoom) {
+  return Math.max(4, zoom - 6);
+}
 
-        const activeVehicles = new Set();
+function updateMarkerSizes() {
+  const zoom = map.getZoom();
+  const radius = getMarkerRadius(zoom);
 
-        buses.forEach(bus => {
-          const key = String(bus.vehicle);
-          activeVehicles.add(key);
-
-          const brand = bus.brand;
-          const bgColor = bus.color || "#ffffff";
-          const brandHtml = brand
-              ? `
-                <span style="
-                  display:inline-flex;
-                  align-items:center;
-                  justify-content:center;
-                  background:${bgColor};
-                  padding:6px 10px;
-                  border-radius:0px;
-                  box-shadow:0 1px 4px rgba(0,0,0,0.08);
-                ">
-                  <img src="/static/${brand}" alt="Route logo" style="height:30px; display:block;">
-                </span>
-              `
-              : "Unknown";
-
-          const popupHtml = `
-            <b></b> ${brandHtml}<br>
-            <b>Vehicle:</b> ${bus.vehicle}<br>
-            <b>Route:</b> ${bus.route}<br>
-            <b>Seen:</b> ${bus.seen ?? "Unknown"}
-          `;
-
-          const lat = Number(bus.lat);
-          const lon = Number(bus.lon);
-
-          if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
-
-          if (markers.has(key)) {
-            const m = markers.get(key);
-            m.setLatLng([lat, lon]);
-            // circleMarker supports setStyle, but tooltip/popup updates should use the Leaflet methods:
-            m.setStyle({ color: bus.color, fillColor: bus.color });
-            m.setTooltipContent(bus.route);
-            m.setPopupContent(popupHtml);
-          } else {
-            const m = L.circleMarker([lat, lon], {
-              radius: 7,
-              color: bus.color,
-              fillColor: bus.color,
-              fillOpacity: 1
-            })
-            .bindTooltip(bus.route)
-            .bindPopup(popupHtml)
-            .addTo(map);
-
-            markers.set(key, m);
-          }
-        });
-
-        for (const [key, marker] of markers.entries()) {
-          if (!activeVehicles.has(key)) {
-            map.removeLayer(marker);
-            markers.delete(key);
-          }
-        }
-      })
-      .catch(err => console.error("Tracker update failed:", err));
+  for (const marker of markers.values()) {
+    marker.setRadius(radius);
   }
+}
 
-  updateBuses();
-  setInterval(updateBuses, 10000);
+map.on("zoomend", updateMarkerSizes);
+
+function updateBuses() {
+  fetch("{% url 'tracker_data' %}")
+    .then(r => r.json())
+    .then(buses => {
+      if (buses.error) {
+        console.error(buses.error);
+        return;
+      }
+
+      const activeVehicles = new Set();
+      const zoom = map.getZoom();
+      const radius = getMarkerRadius(zoom);
+
+      buses.forEach(bus => {
+        const key = String(bus.vehicle);
+        activeVehicles.add(key);
+
+        const brand = bus.brand;
+        const bgColor = bus.color || "#ffffff";
+        const brandHtml = brand
+          ? `
+            <span style="
+              display:inline-flex;
+              align-items:center;
+              justify-content:center;
+              background:${bgColor};
+              padding:6px 10px;
+              box-shadow:0 1px 4px rgba(0,0,0,0.08);
+            ">
+              <img src="/static/${brand}" alt="Route logo" style="height:30px; display:block;">
+            </span>
+          `
+          : "Unknown";
+
+        const popupHtml = `
+          ${brandHtml}<br>
+          <b>Vehicle:</b> ${bus.vehicle}<br>
+          <b>Route:</b> ${bus.route}<br>
+          <b>Seen:</b> ${bus.seen ?? "Unknown"}
+        `;
+
+        const lat = Number(bus.lat);
+        const lon = Number(bus.lon);
+
+        if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
+
+        if (markers.has(key)) {
+          const m = markers.get(key);
+          m.setLatLng([lat, lon]);
+          m.setStyle({ color: bus.color, fillColor: bus.color });
+          m.setRadius(radius);
+          m.setTooltipContent(bus.route);
+          m.setPopupContent(popupHtml);
+        } else {
+          const m = L.circleMarker([lat, lon], {
+            radius: radius,
+            color: bus.color,
+            fillColor: bus.color,
+            fillOpacity: 1
+          })
+          .bindTooltip(bus.route)
+          .bindPopup(popupHtml)
+          .addTo(map);
+
+          markers.set(key, m);
+        }
+      });
+
+      for (const [key, marker] of markers.entries()) {
+        if (!activeVehicles.has(key)) {
+          map.removeLayer(marker);
+          markers.delete(key);
+        }
+      }
+    })
+    .catch(err => console.error("Tracker update failed:", err));
+}
+
+updateBuses();
+setInterval(updateBuses, 10000);
 </script>
 
 </body>

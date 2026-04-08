@@ -191,7 +191,7 @@ def buses(request):
                 f"https://reading-opendata.r2p.com/api/v1/siri-sm?"
                 f"api_token={API_TOKEN}&location={location_code}"
             )
-            response = rq.get(siri_url)
+            response = rq.get(siri_url, timeout=8)
 
             if response.status_code != 200:
                 error = "Could not fetch live bus data."
