@@ -14,7 +14,14 @@
             font-style: normal;
         }
 
-        html, body {
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
             height: 100%;
             margin: 0;
             padding: 0;
@@ -23,31 +30,29 @@
 
         body {
             font-family: "MyFont", sans-serif;
-            color: rgb(0, 0, 0);
+            color: #000;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background: #fff;
         }
 
         .page-container {
             max-width: 1100px;
             width: 100%;
-            margin: 40px auto;
+            margin: 32px auto;
             padding: 0 20px;
-            box-sizing: border-box;
             flex: 1 0 auto;
+        }
+
+        h1,
+        h2 {
+            margin-top: 0;
+            word-wrap: break-word;
         }
 
         h1 {
             margin-bottom: 8px;
-        }
-
-        .search-card {
-            background: #f7f7f7;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-            margin-bottom: 24px;
         }
 
         .search-card,
@@ -60,51 +65,82 @@
         }
 
         .site-header {
-        font-family: 'MyFont', sans-serif;
-        color: rgb(255, 255, 255);
-        background: #2b2a2a;
-        box-shadow: 0 8px 16px -1px rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        position: relative;
-        z-index: 1000;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 6px 20px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        flex-shrink: 0;
+            font-family: "MyFont", sans-serif;
+            color: #fff;
+            background: #2b2a2a;
+            box-shadow: 0 8px 16px -1px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1000;
+            width: 100%;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .site-header h1 {
+            margin: 0;
+            font-size: 28px;
+            line-height: 1.2;
+        }
+
+        .linx {
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+
+        .linx ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 14px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            justify-content: flex-end;
+            align-items: center;
         }
 
         .site-header a {
+            display: inline-block;
             font-size: 16px;
             color: whitesmoke;
             text-decoration: none;
             font-weight: 500;
             padding: 10px 12px;
             border-radius: 6px;
-        }
-
-        @media (max-width: 768px) {
-        .site-header {
-            padding: 12px;
-            gap: 12px;
-        }
-
-        .site-header h1 {
-            font-size: 22px;
             line-height: 1.2;
         }
 
-        .site-header a {
-            font-size: 14px;
-            padding: 6px 8px;
-        }
-    }
-
         .site-header a:hover {
             color: #696969;
+        }
+
+        #search-form {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        #stop-input {
+            width: 100%;
+            max-width: 420px;
+            padding: 12px 14px;
+            font-size: 18px;
+            border: 2px solid #222;
+            border-radius: 12px;
+            font-family: "MyFont", sans-serif;
+        }
+
+        .pl {
+            font-family: "MyFont", sans-serif;
+            font-weight: bold;
         }
 
         .suggestions {
@@ -114,20 +150,37 @@
             gap: 8px;
         }
 
+        #suggestions {
+            margin-bottom: 24px;
+        }
+
         #suggestions button {
             display: block;
             width: 100%;
             text-align: left;
-            padding: 8px;
-            margin-top: 4px;
+            padding: 12px 14px;
+            margin-top: 6px;
             cursor: pointer;
             background: #f1f1f1;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 8px;
+            font-family: "MyFont", sans-serif;
+            font-size: 16px;
         }
 
         #suggestions button:hover {
             background: #e1e1e1;
+        }
+
+        hr {
+            margin: 24px 0;
+            border: 0;
+            border-top: 1px solid #ddd;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
         }
 
         table {
@@ -135,7 +188,8 @@
             margin-top: 20px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #aaa;
             padding: 8px;
         }
@@ -144,41 +198,15 @@
             background: #ddd;
         }
 
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-
-        #search-form {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        #stop-input {
-            width: 400px;
-            max-width: 100%;
-            padding: 12px 14px;
-            font-size: 18px;
-            border: 2px solid #222;
-            border-radius: 12px;
-            box-sizing: border-box;
-        }
-
-        .pl {
-            font-family: 'MyFont', sans-serif;
-            font-weight: bold;
-        }
-
         .table-wrap {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
 
         .bus-table {
             width: 100%;
+            min-width: 700px;
             border-collapse: collapse;
             overflow: hidden;
             border-radius: 10px;
@@ -188,16 +216,19 @@
         .bus-table thead th {
             background-color: #383c3e;
             color: whitesmoke;
+            font-size: 16px;
+            padding: 12px 10px;
         }
 
         .bus-table td {
-            padding: 12px;
+            padding: 12px 10px;
             font-size: 20px;
             font-weight: bold;
             border-bottom: 1px solid #e5e7eb;
+            word-wrap: break-word;
         }
 
-        tr:nth-child(even) {
+        .bus-table tbody tr:nth-child(even) {
             background: #f9fafb;
         }
 
@@ -218,18 +249,17 @@
         }
 
         .operator-logo img {
-            transform: scale(1.00);
-            transform-origin: center;
             max-width: 100%;
             max-height: 100%;
             display: block;
+            object-fit: contain;
         }
 
         .footer-banner {
-            width: calc(100% + 40px);
-            margin-left: -20px;
-            margin-right: -20px;
+            width: 100%;
+            margin: 0;
             padding: 0;
+            overflow: hidden;
         }
 
         .footer-banner img {
@@ -241,22 +271,163 @@
 
         .footer {
             flex-shrink: 0;
-            font-family: 'MyFont', sans-serif;
+            font-family: "MyFont", sans-serif;
             color: white;
             background: #2b2a2a;
             padding: 0 20px 12px;
             font-size: 14px;
-            opacity: 0.9;
+            opacity: 0.95;
             text-align: center;
             width: 100%;
-            box-sizing: border-box;
             margin-top: 0;
-            padding-top: 0;
         }
 
         .footer p {
             font-size: 20px;
             font-weight: 500;
+            margin: 12px 0 0;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 900px) {
+            .site-header {
+                align-items: flex-start;
+            }
+
+            .linx {
+                width: 100%;
+            }
+
+            .linx ul {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                margin: 20px auto;
+                padding: 0 14px;
+            }
+
+            .site-header {
+                padding: 12px 14px;
+                gap: 12px;
+            }
+
+            .site-header h1 {
+                font-size: 22px;
+            }
+
+            .site-header a {
+                font-size: 14px;
+                padding: 8px 10px;
+            }
+
+            .search-card,
+            .results-card {
+                padding: 16px;
+                border-radius: 12px;
+                margin-bottom: 18px;
+            }
+
+            #stop-input {
+                max-width: none;
+                font-size: 16px;
+                padding: 11px 12px;
+            }
+
+            #suggestions button {
+                font-size: 15px;
+                padding: 11px 12px;
+            }
+
+            .bus-table {
+                min-width: 560px;
+            }
+
+            .bus-table thead th {
+                font-size: 14px;
+                padding: 10px 8px;
+            }
+
+            .bus-table td {
+                font-size: 16px;
+                padding: 10px 8px;
+            }
+
+            .operator-logo {
+                width: 90px;
+                height: 36px;
+            }
+
+            .footer {
+                padding: 0 14px 12px;
+            }
+
+            .footer p {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-container {
+                padding: 0 12px;
+            }
+
+            .site-header {
+                padding: 10px 12px;
+            }
+
+            .site-header h1 {
+                font-size: 20px;
+            }
+
+            .linx ul {
+                gap: 8px;
+            }
+
+            .site-header a {
+                font-size: 13px;
+                padding: 7px 9px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .search-card,
+            .results-card {
+                padding: 14px;
+            }
+
+            #stop-input {
+                font-size: 16px;
+            }
+
+            .bus-table {
+                min-width: 500px;
+            }
+
+            .bus-table thead th {
+                font-size: 13px;
+            }
+
+            .bus-table td {
+                font-size: 15px;
+            }
+
+            .operator-logo {
+                width: 72px;
+                height: 30px;
+            }
+
+            .footer p {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -264,7 +435,7 @@
     <header class="site-header">
         <h1>Public Transport in Reading</h1>
         <nav class="linx">
-            <ul style="display: flex; gap: 20px; list-style: none; padding: 0;">
+            <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'buses' %}">Find the Next Buses!</a></li>
                 <li><a href="{% url 'tracker' %}">Track a bus!</a></li>
@@ -279,7 +450,14 @@
         <div class="search-card">
             <form method="POST" id="search-form">
                 {% csrf_token %}
-                <input id="stop-input" type="text" name="stop_name" placeholder="Enter the name of a bus stop" class="pl" autocomplete="off">
+                <input
+                    id="stop-input"
+                    type="text"
+                    name="stop_name"
+                    placeholder="Enter the name of a bus stop"
+                    class="pl"
+                    autocomplete="off"
+                >
             </form>
         </div>
 
@@ -294,37 +472,37 @@
         {% if departures %}
             <div class="results-card">
                 <h2>Departures from {{ stop_name }}</h2>
-            
-            <div class="table-wrap">
-                <table class="bus-table">
-                    <thead>
-                        <tr>
-                            <th>Operator</th>
-                            <th>Route</th>
-                            <th>Destination</th>
-                            <th>Time</th>
-                            <th>Due</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for bus in departures %}
+
+                <div class="table-wrap">
+                    <table class="bus-table">
+                        <thead>
                             <tr>
-                                <td class="operator-cell">
-                                    {% if bus.logo %}
-                                        <div class="operator-logo">
-                                            <img src="{% static bus.logo %}" alt="{{ bus.operator }}">
-                                        </div>
-                                    {% endif %}
-                                </td>
-                                <td>{{ bus.route }}</td>
-                                <td>{{ bus.destination }}</td>
-                                <td>{{ bus.time }}</td>
-                                <td>{{ bus.mins }}</td>
+                                <th>Operator</th>
+                                <th>Route</th>
+                                <th>Destination</th>
+                                <th>Time</th>
+                                <th>Due</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            {% for bus in departures %}
+                                <tr>
+                                    <td class="operator-cell">
+                                        {% if bus.logo %}
+                                            <div class="operator-logo">
+                                                <img src="{% static bus.logo %}" alt="{{ bus.operator }}">
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ bus.route }}</td>
+                                    <td>{{ bus.destination }}</td>
+                                    <td>{{ bus.time }}</td>
+                                    <td>{{ bus.mins }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         {% endif %}
     </div>
@@ -334,7 +512,7 @@
             <img src="{% static 'images/rb-banner.png' %}" alt="RB Banner">
         </div>
         <p>
-        Bus data is sourced from the R2P Open Data Portal | All logos belong to their respective companies
+            Bus data is sourced from the R2P Open Data Portal | All logos belong to their respective companies
         </p>
     </footer>
 
@@ -365,7 +543,7 @@
                 return;
             }
 
-            fetch(`/stop-search/?q=${q}`)
+            fetch(`/stop-search/?q=${encodeURIComponent(q)}`)
                 .then(response => response.json())
                 .then(data => {
                     suggestionsDiv.innerHTML = "";
