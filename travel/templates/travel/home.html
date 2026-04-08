@@ -15,6 +15,12 @@
             font-style: normal;
         }
 
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         html, body {
             margin: 0;
             padding: 0;
@@ -72,7 +78,7 @@
         }
 
         .site-header {
-            font-family: 'MyFont', sans-serif;
+            font-family: "MyFont", sans-serif;
             color: rgb(255, 255, 255);
             background: #2b2a2a;
             box-shadow: 0 8px 16px -1px rgba(0, 0, 0, 0.5);
@@ -84,11 +90,12 @@
             width: 100%;
             z-index: 1000;
             overflow: visible;
-            padding: 6px 20px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 20px;
+            flex-wrap: wrap;
             box-sizing: border-box;
         }
 
@@ -96,16 +103,22 @@
             margin: 0;
             font-size: 28px;
             line-height: 1.2;
-            flex-shrink: 0;
+        }
+
+        .linx {
+            min-width: 0;
+            flex: 1 1 auto;
         }
 
         .site-header a {
+            display: inline-block;
             font-size: 16px;
             color: whitesmoke;
             text-decoration: none;
             font-weight: 500;
             padding: 10px 12px;
             border-radius: 6px;
+            line-height: 1.2;
         }
 
         .site-header a:hover {
@@ -114,12 +127,13 @@
 
         .nav-list {
             display: flex;
-            gap: 20px;
+            gap: 10px 14px;
             list-style: none;
             padding: 0;
             margin: 0;
             flex-wrap: wrap;
             justify-content: flex-end;
+            align-items: center;
         }
 
         .companies {
@@ -293,7 +307,7 @@
         }
 
         .footer {
-            font-family: 'MyFont', sans-serif;
+            font-family: "MyFont", sans-serif;
             color: white;
             background: #2b2a2a;
             padding: 0 20px 12px;
@@ -312,27 +326,38 @@
             line-height: 1.4;
         }
 
+        @media (max-width: 900px) {
+            .site-header {
+                align-items: flex-start;
+            }
+
+            .linx {
+                width: 100%;
+            }
+
+            .nav-list {
+                justify-content: flex-start;
+            }
+        }
+
         @media (max-width: 768px) {
             .site-header {
-                padding: 12px;
+                padding: 12px 14px;
                 gap: 12px;
-                align-items: flex-start;
             }
 
             .site-header h1 {
                 font-size: 22px;
                 line-height: 1.2;
-                max-width: 220px;
             }
 
             .site-header a {
                 font-size: 14px;
-                padding: 6px 8px;
+                padding: 8px 10px;
             }
 
             .nav-list {
-                gap: 12px;
-                justify-content: flex-start;
+                gap: 8px 12px;
             }
 
             .hero-pic img {
@@ -397,6 +422,25 @@
 
             .footer p {
                 font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-header {
+                padding: 10px 12px;
+            }
+
+            .site-header h1 {
+                font-size: 20px;
+            }
+
+            .site-header a {
+                font-size: 13px;
+                padding: 7px 9px;
+            }
+
+            .nav-list {
+                gap: 8px;
             }
         }
     </style>
