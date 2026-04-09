@@ -192,13 +192,20 @@
             padding: 12px 10px;
         }
 
+        .train-table th,
         .train-table td {
-            padding: 12px 10px;
-            font-size: 22px;
-            font-weight: bold;
-            border-bottom: 1px solid #e5e7eb;
-            word-wrap: break-word;
+            text-align: center;
+            vertical-align: middle;
         }
+
+
+        .train-table td {
+        padding: 12px 10px;
+        font-size: 22px;
+        font-weight: bold;
+        border-bottom: 1px solid #e5e7eb;
+        word-wrap: break-word;
+    }
 
         .train-table tbody tr:nth-child(even) {
             background: #f9fafb;
@@ -232,8 +239,9 @@
         }
 
         .footer-banner {
-        width: 100%;
-        margin: 0;
+        width: calc(100% + 40px);
+        margin-left: -20px;
+        margin-right: -20px;
         padding: 0;
         overflow: hidden;
         line-height: 0;
@@ -251,18 +259,19 @@
         font-family: "MyFont", sans-serif;
         color: white;
         background: #2b2a2a;
-        padding: 0 0 12px;
+        padding: 0 20px 12px;
         font-size: 14px;
         opacity: 0.95;
         text-align: center;
         width: 100%;
         margin-top: 0;
+        box-sizing: border-box;
     }
 
     .footer p {
         font-size: 20px;
         font-weight: 500;
-        margin: 12px 20px 0;
+        margin: 12px 0 0;
         line-height: 1.4;
     }
 
@@ -348,12 +357,19 @@
             }
 
             .footer {
-                padding: 0 14px 12px;
-            }
+            padding: 0 14px 12px;
+        }
 
-            .footer p {
-                font-size: 15px;
-            }
+        .footer-banner {
+            width: calc(100% + 28px);
+            margin-left: -14px;
+            margin-right: -14px;
+        }
+
+        .footer p {
+            font-size: 15px;
+            margin: 12px 0 0;
+        }
         }
 
         @media (max-width: 480px) {
@@ -407,21 +423,23 @@
                 height: 30px;
             }
 
+            .footer {
+            padding: 0 12px 12px;
         }
 
-        @media (max-width: 768px) {
-        .footer p {
-            font-size: 15px;
-            margin: 12px 14px 0;
+        .footer-banner {
+            width: calc(100% + 24px);
+            margin-left: -12px;
+            margin-right: -12px;
         }
-    }
 
-    @media (max-width: 480px) {
         .footer p {
             font-size: 14px;
-            margin: 12px 12px 0;
+            margin: 12px 0 0;
         }
-    }
+
+        }
+
     </style>
 </head>
 <body>
