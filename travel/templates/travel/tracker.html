@@ -55,22 +55,40 @@
         border-radius: 6px;
     }
 
-    @media (max-width: 768px) {
-    .site-header {
-        padding: 12px;
-        gap: 12px;
-    }
+    @media (max-width: 900px) {
+            .site-header {
+                align-items: flex-start;
+            }
 
-    .site-header h1 {
-        font-size: 22px;
-        line-height: 1.2;
-    }
+            .linx {
+                width: 100%;
+            }
 
-    .site-header a {
-        font-size: 14px;
-        padding: 6px 8px;
-    }
-}
+            .nav-list {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .site-header {
+                padding: 12px 14px;
+                gap: 12px;
+            }
+
+            .site-header h1 {
+                font-size: 22px;
+                line-height: 1.2;
+            }
+
+            .site-header a {
+                font-size: 14px;
+                padding: 8px 10px;
+            }
+
+            .nav-list {
+                gap: 8px 12px;
+            }
+        }
 
     .site-header a:hover {
         color: #696969;
