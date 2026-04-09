@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,110 +10,164 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <style>
-
     @font-face {
-    font-family: "MyFont";
-    src: url("/static/fonts/Netto-Regular-Demo-BF648bcd4ec503f.woff") format("woff");
-    font-weight: normal;
-    font-style: normal;
+      font-family: "MyFont";
+      src: url("/static/fonts/Netto-Regular-Demo-BF648bcd4ec503f.woff") format("woff");
     }
 
-    html, body {
-        height: 100%;
-        margin: 0;
-        font-family: "MyFont", sans-serif;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: "MyFont", sans-serif;
     }
 
     body {
-        display: flex;
-        flex-direction: column;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* HEADER (NOW MATCHES OTHER PAGES EXACTLY) */
     .site-header {
-        font-family: 'MyFont', sans-serif;
-        color: rgb(255, 255, 255);
-        background: #2b2a2a;
-        box-shadow: 0 8px 16px -1px rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        position: relative;
-        z-index: 1000;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 6px 20px;
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        flex-shrink: 0;
+      font-family: "MyFont", sans-serif;
+      color: #fff;
+      background: #2b2a2a;
+      box-shadow: 0 8px 16px -1px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 1000;
+      width: 100%;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
+
+    .site-header h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+      flex-shrink: 0;
+    }
+
+    .linx {
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .linx ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      justify-content: flex-end;
+      align-items: center;
     }
 
     .site-header a {
-        font-size: 16px;
-        color: whitesmoke;
-        text-decoration: none;
-        font-weight: 500;
-        padding: 10px 12px;
-        border-radius: 6px;
+      display: inline-block;
+      font-size: 16px;
+      color: whitesmoke;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 12px;
+      border-radius: 6px;
+      line-height: 1.2;
     }
-
-    @media (max-width: 900px) {
-            .site-header {
-                align-items: flex-start;
-            }
-
-            .linx {
-                width: 100%;
-            }
-
-            .nav-list {
-                justify-content: flex-start;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .site-header {
-                padding: 12px 14px;
-                gap: 12px;
-            }
-
-            .site-header h1 {
-                font-size: 22px;
-                line-height: 1.2;
-            }
-
-            .site-header a {
-                font-size: 14px;
-                padding: 8px 10px;
-            }
-
-            .nav-list {
-                gap: 8px 12px;
-            }
-        }
 
     .site-header a:hover {
-        color: #696969;
+      color: #696969;
     }
 
+    /* MAP */
     #map {
-        flex: 1;
-        width: 100%;
+      flex: 1;
+      width: 100%;
     }
 
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .site-header {
+        align-items: flex-start;
+      }
+
+      .linx {
+        width: 100%;
+      }
+
+      .linx ul {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .site-header {
+        padding: 12px 14px;
+        gap: 12px;
+      }
+
+      .site-header h1 {
+        font-size: 22px;
+      }
+
+      .site-header a {
+        font-size: 14px;
+        padding: 8px 10px;
+      }
+
+      .linx ul {
+        gap: 8px 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .site-header {
+        padding: 10px 12px;
+      }
+
+      .site-header h1 {
+        font-size: 20px;
+      }
+
+      .linx ul {
+        gap: 8px;
+      }
+
+      .site-header a {
+        font-size: 13px;
+        padding: 7px 9px;
+      }
+    }
   </style>
 </head>
+
 <body>
 
 <header class="site-header">
-    <h1>Public Transport in Reading</h1>
-    <nav class="linx">
-        <ul style="display: flex; gap: 20px; list-style: none; padding: 0;">
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'buses' %}">Find the Next Buses!</a></li>
-            <li><a href="{% url 'tracker' %}">Track a bus!</a></li>
-            <li><a href="{% url 'trains' %}">Find the Next Trains!</a></li>
-        </ul>
-    </nav>
+  <h1>Public Transport in Reading</h1>
+  <nav class="linx">
+    <ul>
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'buses' %}">Find the Next Buses!</a></li>
+      <li><a href="{% url 'tracker' %}">Track a bus!</a></li>
+      <li><a href="{% url 'trains' %}">Find the Next Trains!</a></li>
+    </ul>
+  </nav>
 </header>
 
 <div id="map"></div>
@@ -135,7 +190,6 @@ function getMarkerRadius(zoom) {
 function updateMarkerSizes() {
   const zoom = map.getZoom();
   const radius = getMarkerRadius(zoom);
-
   for (const marker of markers.values()) {
     marker.setRadius(radius);
   }
@@ -147,10 +201,7 @@ function updateBuses() {
   fetch("{% url 'tracker_data' %}")
     .then(r => r.json())
     .then(buses => {
-      if (buses.error) {
-        console.error(buses.error);
-        return;
-      }
+      if (buses.error) return;
 
       const activeVehicles = new Set();
       const zoom = map.getZoom();
@@ -160,21 +211,10 @@ function updateBuses() {
         const key = String(bus.vehicle);
         activeVehicles.add(key);
 
-        const brand = bus.brand;
-        const bgColor = bus.color || "#ffffff";
-        const brandHtml = brand
-          ? `
-            <span style="
-              display:inline-flex;
-              align-items:center;
-              justify-content:center;
-              background:${bgColor};
-              padding:6px 10px;
-              box-shadow:0 1px 4px rgba(0,0,0,0.08);
-            ">
-              <img src="/static/${brand}" alt="Route logo" style="height:30px; display:block;">
-            </span>
-          `
+        const brandHtml = bus.brand
+          ? `<span style="display:inline-flex;align-items:center;justify-content:center;background:${bus.color || "#fff"};padding:6px 10px;">
+               <img src="/static/${bus.brand}" style="height:30px;">
+             </span>`
           : "Unknown";
 
         const popupHtml = `
@@ -186,7 +226,6 @@ function updateBuses() {
 
         const lat = Number(bus.lat);
         const lon = Number(bus.lon);
-
         if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
 
         if (markers.has(key)) {
@@ -217,8 +256,7 @@ function updateBuses() {
           markers.delete(key);
         }
       }
-    })
-    .catch(err => console.error("Tracker update failed:", err));
+    });
 }
 
 updateBuses();
