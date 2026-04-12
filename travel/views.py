@@ -311,7 +311,6 @@ def trains(request):
     rails = None
     station_name = None
     error = None
-    status = None
 
     if request.method == "POST":
         station_code = request.POST.get("station_code")
@@ -327,13 +326,22 @@ def trains(request):
                 error = "Could not fetch train data."
             else:
                 data = response.json()
-                now = datetime.now(tz)
                 rails = []
 
-                for service in data.get("services", [])[:10]:
-                    loc = service.get("locationDetail", {})
+                services = data.get("services") or []
+
+                for service in services[:10]:
+                    service = service or {}
+                    loc = service.get("locationDetail") or {}
+
                     exp_time = loc.get("gbttBookedDeparture")
                     rt_dep = loc.get("realtimeDeparture")
+
+                    destination_list = loc.get("destination") or []
+                    if destination_list and destination_list[0]:
+                        destination = destination_list[0].get("description", "?")
+                    else:
+                        destination = "?"
 
                     if not exp_time or exp_time == "?":
                         continue
@@ -343,13 +351,11 @@ def trains(request):
                     except ValueError:
                         continue
 
-                    now = datetime.now(timezone.utc)
-                    day_end = now.replace(hour=23, minute=59, second=59, microsecond=0)
-
+                    now = datetime.now(tz)
                     dep_dt = datetime.combine(date.today(), dep_time, tzinfo=tz)
 
                     if dep_dt < now - timedelta(hours=6):
-                        dep_dt = dep_dt + timedelta(days=1)
+                        dep_dt += timedelta(days=1)
 
                     if dep_dt < now:
                         continue
@@ -362,38 +368,36 @@ def trains(request):
                             final_dt = datetime.combine(date.today(), final_dep, tzinfo=tz)
 
                             if final_dt < now - timedelta(hours=6):
-                                final_dt = final_dt + timedelta(days=1)
+                                final_dt += timedelta(days=1)
                         except ValueError:
                             final_dt = dep_dt
 
                     operator = service.get("atocName", "?")
                     operator_code = service.get("atocCode", "?")
-                    logo = railops.get(operator_code, None)
+                    logo = railops.get(operator_code)
 
                     delay = int((final_dt - dep_dt).total_seconds() // 60)
-
                     if delay <= 0:
                         status = "On time"
                     else:
                         status = f"Delayed by {delay} mins, new departure time is {final_dt.strftime('%H:%M')}"
 
                     rails.append({
-                    "service": service.get("serviceUid", "?"),
-                    "operator": operator,
-                    "logo": logo,
-                    "destination": loc.get("destination", [{}])[0].get("description", "?"),
-                    "time": final_dt.strftime("%H:%M"),
-                    "platform": loc.get("platform", "N/A"),
-                    "status": status,
-                    "dt": final_dt,
-                })
+                        "service": service.get("serviceUid", "?"),
+                        "operator": operator,
+                        "logo": logo,
+                        "destination": destination,
+                        "time": final_dt.strftime("%H:%M"),
+                        "platform": loc.get("platform", "N/A"),
+                        "status": status,
+                        "dt": final_dt,
+                    })
 
-            rails.sort(key=lambda x: x["dt"])
-            rails = rails[:10]
+                rails.sort(key=lambda x: x["dt"])
+                rails = rails[:10]
 
-            for r in rails:
-                r.pop("dt", None)
-
+                for r in rails:
+                    r.pop("dt", None)
 
     return render(request, "travel/trains.html", {
         "station_name": station_name,
