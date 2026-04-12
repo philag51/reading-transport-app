@@ -173,11 +173,6 @@ def stop_search(request):
     return JsonResponse(matches[:50], safe=False)
 
 
-from datetime import datetime, timezone
-from django.shortcuts import render
-import xml.etree.ElementTree as ET
-import requests as rq
-
 def buses(request):
     departures = []
     stop_name = None
